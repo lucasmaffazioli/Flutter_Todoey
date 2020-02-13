@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AddScreen extends StatelessWidget {
+  final Function callback;
+
+  final textFieldController = TextEditingController();
+
+  AddScreen(this.callback);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,6 +38,7 @@ class AddScreen extends StatelessWidget {
             TextField(
               autofocus: true,
               textAlign: TextAlign.center,
+              controller: textFieldController,
               decoration: InputDecoration(
                 focusColor: Colors.lightBlueAccent,
                 fillColor: Colors.red,
@@ -47,7 +54,8 @@ class AddScreen extends StatelessWidget {
               color: Colors.lightBlueAccent,
               padding: EdgeInsets.all(15),
               onPressed: () {
-                print('lol');
+                callback(textFieldController.text);
+                Navigator.pop(context);
               },
               child: Text(
                 'Add',

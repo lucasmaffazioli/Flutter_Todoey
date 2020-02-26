@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'add_screen.dart';
 import 'package:todoey/widgets/task_list.dart';
 import '../models/task.dart';
+import '../models/tasks.dart';
+import 'package:provider/provider.dart';
 
 class TasksScreen extends StatefulWidget {
   @override
@@ -9,20 +11,23 @@ class TasksScreen extends StatefulWidget {
 }
 
 class _TasksScreenState extends State<TasksScreen> {
-  List<Task> items = [
-    Task(name: 'List item 1'),
-    Task(name: 'List item 2'),
-    Task(name: 'List item 3'),
-  ];
+  // List<Task> items = [
+  //   Task(name: 'List item 1'),
+  //   Task(name: 'List item 2'),
+  //   Task(name: 'List item 3'),
+  // ];
 
   void addCallback(String newItem) {
-    setState(() {
-      items.add(Task(name: newItem));
-    });
+    // setState(() {
+    // items.add(Task(name: newItem));
+    Provider.of<Tasks>(context, listen: false).addTask(newItem);
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
+    print(Provider.of<Tasks>(context).items);
+
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
@@ -63,7 +68,7 @@ class _TasksScreenState extends State<TasksScreen> {
                     ),
                   ),
                   Text(
-                    '12 tasks',
+                    '${Provider.of<Tasks>(context).items.length} tasks',
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.white,
@@ -83,7 +88,7 @@ class _TasksScreenState extends State<TasksScreen> {
                 ),
                 padding: EdgeInsets.all(30),
                 child: TaskList(
-                  items: items,
+                  items: Provider.of<Tasks>(context).items,
                 ),
               ),
             ),

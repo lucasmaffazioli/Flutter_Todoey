@@ -12,4 +12,8 @@ class Tasks extends ChangeNotifier {
     );
     notifyListeners();
   }
+
+  int get taskCount {
+    return items.length;
+  }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todoey/widgets/item.dart';
 import 'package:todoey/models/task.dart';
+import '../models/tasks.dart';
+import 'package:provider/provider.dart';
 
 class TaskList extends StatefulWidget {
   final List<Task> items;
@@ -12,27 +14,23 @@ class TaskList extends StatefulWidget {
 }
 
 class _TaskListState extends State<TaskList> {
-  // List<Task> items = [
-  //   Task(name: 'List 1', isChecked: false),
-  //   Task(name: 'List 2', isChecked: false),
-  //   Task(name: 'List 3', isChecked: false),
-  //   Task(name: 'List 4', isChecked: false),
-  // ];
-
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: widget.items.length,
-        itemBuilder: (context, index) {
-          return Item(
-            name: widget.items[index].name,
-            isChecked: widget.items[index].isChecked,
-            checkCallback: (isChecked) {
-              setState(() {
-                widget.items[index].toggleCheckbox();
-              });
-            },
-          );
-        });
+    return Consumer<Tasks>(
+      builder: (context, tasks, child) {
+        return ListView.builder(
+            itemCount: tasks.taskCount,
+            itemBuilder: (context, index) {
+              return Item(
+                name: tasks.items[index].name,
+                isChecked: tasks.items[index].isChecked,
+                checkCallback: (isChecked) {
+                  tasks.items[index].toggleCheckbox();
+                  // TODO notifyListeners();
+                },
+              );
+            });
+      },
+    );
   }
 }

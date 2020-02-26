@@ -5,29 +5,13 @@ import '../models/task.dart';
 import '../models/tasks.dart';
 import 'package:provider/provider.dart';
 
-class TasksScreen extends StatefulWidget {
-  @override
-  _TasksScreenState createState() => _TasksScreenState();
-}
-
-class _TasksScreenState extends State<TasksScreen> {
-  // List<Task> items = [
-  //   Task(name: 'List item 1'),
-  //   Task(name: 'List item 2'),
-  //   Task(name: 'List item 3'),
-  // ];
-
-  void addCallback(String newItem) {
-    // setState(() {
-    // items.add(Task(name: newItem));
-    Provider.of<Tasks>(context, listen: false).addTask(newItem);
-    // });
-  }
+class TasksScreen extends StatelessWidget {
+  // void addCallback(String newItem) {
+  //   Provider.of<Tasks>(context, listen: false).addTask(newItem);
+  // }
 
   @override
   Widget build(BuildContext context) {
-    print(Provider.of<Tasks>(context).items);
-
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
@@ -36,7 +20,14 @@ class _TasksScreenState extends State<TasksScreen> {
           backgroundColor: Colors.lightBlueAccent,
           child: Icon(Icons.add),
           onPressed: () {
-            showModalBottomSheet(context: context, builder: (context) => AddScreen(addCallback));
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => AddScreen(
+                (String newItem) {
+                  Provider.of<Tasks>(context, listen: false).addTask(newItem);
+                },
+              ),
+            );
           },
         ),
         body: Column(
@@ -68,7 +59,7 @@ class _TasksScreenState extends State<TasksScreen> {
                     ),
                   ),
                   Text(
-                    '${Provider.of<Tasks>(context).items.length} tasks',
+                    '${Provider.of<Tasks>(context).taskCount} tasks',
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.white,
@@ -87,9 +78,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   ),
                 ),
                 padding: EdgeInsets.all(30),
-                child: TaskList(
-                  items: Provider.of<Tasks>(context).items,
-                ),
+                child: TaskList(),
               ),
             ),
           ],

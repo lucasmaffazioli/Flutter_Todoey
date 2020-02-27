@@ -21,12 +21,15 @@ class _TaskListState extends State<TaskList> {
         return ListView.builder(
             itemCount: tasks.taskCount,
             itemBuilder: (context, index) {
+              final Task task = tasks.getTasks[index];
               return Item(
-                name: tasks.items[index].name,
-                isChecked: tasks.items[index].isChecked,
+                name: task.name,
+                isChecked: task.isChecked,
                 checkCallback: (isChecked) {
-                  tasks.items[index].toggleCheckbox();
-                  // TODO notifyListeners();
+                  tasks.toggleCheckbox(task);
+                },
+                longpressCallback: () {
+                  tasks.removeTask(task);
                 },
               );
             });
